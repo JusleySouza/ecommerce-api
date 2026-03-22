@@ -17,4 +17,6 @@ public interface ProductService {
 
     public List<ProductResponseDTO> findAllProducts();
 
+    public void deleteProduct(UUID id);
+
 }

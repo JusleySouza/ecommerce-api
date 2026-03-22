@@ -52,4 +52,8 @@ public class ProductServiceImplement implements ProductService {
         return listResponse;
     }
 
+    public void deleteProduct(UUID id){
+        productRepository.deleteById(id);
+    }
+
 }
