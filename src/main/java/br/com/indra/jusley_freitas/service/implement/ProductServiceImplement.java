@@ -1,12 +1,15 @@
 package br.com.indra.jusley_freitas.service.implement;
 
 import br.com.indra.jusley_freitas.dto.request.ProductRequestDTO;
+import br.com.indra.jusley_freitas.dto.request.UpdateProductDTO;
 import br.com.indra.jusley_freitas.dto.response.ProductResponseDTO;
 import br.com.indra.jusley_freitas.mapper.ProductMapper;
 import br.com.indra.jusley_freitas.model.Product;
 import br.com.indra.jusley_freitas.repository.ProductRepository;
 import br.com.indra.jusley_freitas.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -24,13 +27,21 @@ public class ProductServiceImplement implements ProductService {
     private ProductResponseDTO responseDTO;
     private List<ProductResponseDTO> listResponse;
 
-    public Product createProduct(ProductRequestDTO requestDTO){
-        product = ProductMapper.toModel(requestDTO);
-        return productRepository.save(product);
+    public ProductResponseDTO createProduct(ProductRequestDTO requestDTO){
+        Product product = ProductMapper.toEntity(requestDTO);
+        productRepository.save(product);
+        return ProductMapper.toResponse(product);
     }
 
-    public ProductResponseDTO findProductById(UUID id){
-        product = productRepository.findById(id).get();
+    public void updateProduct(UpdateProductDTO updateProductDTO, UUID productId){
+        Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
+
+        product = ProductMapper.updateEntity(product, updateProductDTO);
+        productRepository.save(product);
+    }
+
+    public ProductResponseDTO findProductById(UUID productId){
+        product = productRepository.findById(productId).get();
 
         if(product == null){
             throw new RuntimeException("Product not found");
@@ -52,8 +63,8 @@ public class ProductServiceImplement implements ProductService {
         return listResponse;
     }
 
-    public void deleteProduct(UUID id){
-        productRepository.deleteById(id);
+    public void deleteProduct(UUID productId){
+        productRepository.deleteById(productId);
     }
 
 }
