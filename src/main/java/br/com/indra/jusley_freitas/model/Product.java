@@ -3,7 +3,9 @@ package br.com.indra.jusley_freitas.model;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.type.SqlTypes;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -19,8 +21,10 @@ import java.util.UUID;
 public class Product {
 
     @Id
+    @GeneratedValue
     @UuidGenerator
-    @Column(name = "id", updatable = false, nullable = false, columnDefinition = "VARCHAR(36)", unique = true)
+    @JdbcTypeCode(SqlTypes.VARCHAR)
+    @Column(name = "id", updatable = false, nullable = false, unique = true)
     private UUID id;
 
     @Column(name = "name",  nullable = false)
@@ -29,7 +33,7 @@ public class Product {
     @Column(name = "description",   nullable = false)
     private String description;
 
-    @Column(name = "sku", nullable = false)
+    @Column(name = "sku", nullable = false, unique = true, updatable = false)
     private String sku;
 
     @Column(name = "price", nullable = false)
