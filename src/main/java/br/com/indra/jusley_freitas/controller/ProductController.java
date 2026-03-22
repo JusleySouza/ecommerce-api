@@ -1,8 +1,8 @@
 package br.com.indra.jusley_freitas.controller;
 
 import br.com.indra.jusley_freitas.dto.request.ProductRequestDTO;
+import br.com.indra.jusley_freitas.dto.request.UpdateProductDTO;
 import br.com.indra.jusley_freitas.dto.response.ProductResponseDTO;
-import br.com.indra.jusley_freitas.model.Product;
 import br.com.indra.jusley_freitas.service.implement.ProductServiceImplement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,8 +20,14 @@ public class ProductController {
     private final ProductServiceImplement service;
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody ProductRequestDTO requestDTO){
+    public ResponseEntity<ProductResponseDTO> createProduct(@RequestBody ProductRequestDTO requestDTO){
         return new ResponseEntity<>(service.createProduct(requestDTO), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/update/{productId}")
+    public ResponseEntity<Void>  updateProduct(@PathVariable UUID productId, @RequestBody UpdateProductDTO product){
+        service.updateProduct(product, productId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("{productId}")
