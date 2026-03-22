@@ -9,6 +9,7 @@ import br.com.indra.jusley_freitas.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,6 +39,17 @@ public class ProductServiceImplement implements ProductService {
         responseDTO = ProductMapper.toResponse(product);
 
         return responseDTO;
+    }
+
+    public List<ProductResponseDTO> findAllProducts(){
+        listResponse = new ArrayList<>();
+
+        products = productRepository.findAll();
+
+        for (Product product : products) {
+            listResponse.add(ProductMapper.toResponse(product));
+        }
+        return listResponse;
     }
 
 }
