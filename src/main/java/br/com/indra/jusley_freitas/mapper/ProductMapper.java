@@ -1,12 +1,15 @@
 package br.com.indra.jusley_freitas.mapper;
 
 import br.com.indra.jusley_freitas.dto.request.ProductRequestDTO;
+import br.com.indra.jusley_freitas.dto.request.UpdateProductDTO;
 import br.com.indra.jusley_freitas.dto.response.ProductResponseDTO;
 import br.com.indra.jusley_freitas.model.Product;
 
+import java.time.LocalDateTime;
+
 public class ProductMapper {
 
-    public static Product toModel(ProductRequestDTO dto) {
+    public static Product toEntity(ProductRequestDTO dto) {
         return Product.builder()
                 .name(dto.name())
                 .description(dto.description())
@@ -31,6 +34,14 @@ public class ProductMapper {
                 entity.getCreatedAt(),
                 entity.getUpdatedAt()
         );
+    }
+
+    public static Product updateEntity(Product entity, UpdateProductDTO dto) {
+        entity.setName(dto.name());
+        entity.setDescription(dto.description());
+        entity.setStockQuantity(dto.stockQuantity());
+        entity.setUpdatedAt(LocalDateTime.now());
+        return entity;
     }
 
 }
