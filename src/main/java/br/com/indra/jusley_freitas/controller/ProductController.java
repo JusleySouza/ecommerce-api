@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -26,6 +27,11 @@ public class ProductController {
     @GetMapping("{productId}")
     public ResponseEntity<ProductResponseDTO> getProductsById(@PathVariable UUID productId) {
         return new ResponseEntity<>(service.findProductById(productId), HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProductResponseDTO>> getAllProducts() {
+        return new ResponseEntity<>(service.findAllProducts(), HttpStatus.OK);
     }
 
 }
