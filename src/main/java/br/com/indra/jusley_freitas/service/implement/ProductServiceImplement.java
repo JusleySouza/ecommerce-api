@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -25,6 +26,18 @@ public class ProductServiceImplement implements ProductService {
     public Product createProduct(ProductRequestDTO requestDTO){
         product = ProductMapper.toModel(requestDTO);
         return productRepository.save(product);
+    }
+
+    public ProductResponseDTO findProductById(UUID id){
+        product = productRepository.findById(id).get();
+
+        if(product == null){
+            throw new RuntimeException("Product not found");
+        }
+
+        responseDTO = ProductMapper.toResponse(product);
+
+        return responseDTO;
     }
 
 }
