@@ -1,6 +1,7 @@
 package br.com.indra.jusley_freitas.mapper;
 
 import br.com.indra.jusley_freitas.dto.request.ProductRequestDTO;
+import br.com.indra.jusley_freitas.dto.request.UpdatePriceProductDTO;
 import br.com.indra.jusley_freitas.dto.request.UpdateProductDTO;
 import br.com.indra.jusley_freitas.dto.response.ProductResponseDTO;
 import br.com.indra.jusley_freitas.model.Product;
@@ -40,6 +41,12 @@ public class ProductMapper {
         entity.setName(dto.name());
         entity.setDescription(dto.description());
         entity.setStockQuantity(dto.stockQuantity());
+        entity.setUpdatedAt(LocalDateTime.now());
+        return entity;
+    }
+
+    public static Product updatePriceProduct(Product entity, UpdatePriceProductDTO dto) {
+        entity.setPrice(dto.price());
         entity.setUpdatedAt(LocalDateTime.now());
         return entity;
     }
