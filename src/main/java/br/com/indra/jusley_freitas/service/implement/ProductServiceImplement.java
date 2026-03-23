@@ -1,15 +1,21 @@
 package br.com.indra.jusley_freitas.service.implement;
 
 import br.com.indra.jusley_freitas.dto.request.ProductRequestDTO;
+import br.com.indra.jusley_freitas.dto.request.UpdatePriceProductDTO;
 import br.com.indra.jusley_freitas.dto.request.UpdateProductDTO;
 import br.com.indra.jusley_freitas.dto.response.ProductResponseDTO;
+import br.com.indra.jusley_freitas.mapper.PriceHistoryMapper;
 import br.com.indra.jusley_freitas.mapper.ProductMapper;
+import br.com.indra.jusley_freitas.model.PriceHistory;
 import br.com.indra.jusley_freitas.model.Product;
+import br.com.indra.jusley_freitas.repository.PriceHistoryRepository;
 import br.com.indra.jusley_freitas.repository.ProductRepository;
 import br.com.indra.jusley_freitas.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -19,9 +25,8 @@ import java.util.UUID;
 public class ProductServiceImplement implements ProductService {
 
     private final ProductRepository productRepository;
+    private final PriceHistoryRepository priceRepository;
 
-    private Product product;
-    private List<Product> products;
     private ProductResponseDTO responseDTO;
     private List<ProductResponseDTO> listResponse;
 
@@ -36,6 +41,21 @@ public class ProductServiceImplement implements ProductService {
 
         product = ProductMapper.updateEntity(product, updateProductDTO);
         productRepository.save(product);
+    }
+
+    @Transactional
+    public void updatePriceProduct(UpdatePriceProductDTO productDTO, UUID id){
+        Product product = productRepository.findById(id).
+                orElseThrow(() -> new RuntimeException("Product not found"));
+
+        if (product.getPrice().compareTo(productDTO.price()) != 0) {
+            PriceHistory history = PriceHistoryMapper.toEntity( product, productDTO);
+            priceRepository.save(history);
+        }
+
+        product = ProductMapper.updatePriceProduct(product, productDTO);
+
+        productRepository.saveAndFlush(product);
     }
 
     public ProductResponseDTO findProductById(UUID productId){
@@ -53,7 +73,7 @@ public class ProductServiceImplement implements ProductService {
     public List<ProductResponseDTO> findAllProducts(){
         listResponse = new ArrayList<>();
 
-        products = productRepository.findAll();
+        List<Product> products = productRepository.findAll();
 
         for (Product product : products) {
             listResponse.add(ProductMapper.toResponse(product));
