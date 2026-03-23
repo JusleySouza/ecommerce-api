@@ -1,6 +1,7 @@
 package br.com.indra.jusley_freitas.controller;
 
 import br.com.indra.jusley_freitas.dto.request.ProductRequestDTO;
+import br.com.indra.jusley_freitas.dto.request.UpdatePriceProductDTO;
 import br.com.indra.jusley_freitas.dto.request.UpdateProductDTO;
 import br.com.indra.jusley_freitas.dto.response.ProductResponseDTO;
 import br.com.indra.jusley_freitas.service.ProductService;
@@ -27,6 +28,12 @@ public class ProductController {
     @PutMapping("/update/{productId}")
     public ResponseEntity<Void>  updateProduct(@PathVariable UUID productId, @RequestBody UpdateProductDTO product){
         service.updateProduct(product, productId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PatchMapping("/update/price/{productId}")
+    public ResponseEntity<Void>  updatePriceProduct(@PathVariable UUID productId, @RequestBody UpdatePriceProductDTO product){
+        service.updatePriceProduct(product, productId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
