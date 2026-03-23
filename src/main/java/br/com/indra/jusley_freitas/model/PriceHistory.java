@@ -1,10 +1,7 @@
 package br.com.indra.jusley_freitas.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UuidGenerator;
@@ -17,6 +14,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "history_products")
@@ -30,8 +28,8 @@ public class PriceHistory {
     private UUID id;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "product_id")
-    private Product idProduct;
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
 
     @Column(name = "old_price",   nullable = false)
     private BigDecimal oldPrice;
