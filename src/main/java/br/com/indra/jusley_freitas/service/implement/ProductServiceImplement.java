@@ -8,8 +8,6 @@ import br.com.indra.jusley_freitas.model.Product;
 import br.com.indra.jusley_freitas.repository.ProductRepository;
 import br.com.indra.jusley_freitas.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -41,7 +39,7 @@ public class ProductServiceImplement implements ProductService {
     }
 
     public ProductResponseDTO findProductById(UUID productId){
-        product = productRepository.findById(productId).get();
+        Product product = productRepository.findById(productId).get();
 
         if(product == null){
             throw new RuntimeException("Product not found");
@@ -64,7 +62,10 @@ public class ProductServiceImplement implements ProductService {
     }
 
     public void deleteProduct(UUID productId){
-        productRepository.deleteById(productId);
+        Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
+
+        product = ProductMapper.deleteProduct(product);
+        productRepository.save(product);
     }
 
 }

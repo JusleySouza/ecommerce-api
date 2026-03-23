@@ -3,7 +3,7 @@ package br.com.indra.jusley_freitas.controller;
 import br.com.indra.jusley_freitas.dto.request.ProductRequestDTO;
 import br.com.indra.jusley_freitas.dto.request.UpdateProductDTO;
 import br.com.indra.jusley_freitas.dto.response.ProductResponseDTO;
-import br.com.indra.jusley_freitas.service.implement.ProductServiceImplement;
+import br.com.indra.jusley_freitas.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ import java.util.UUID;
 @RequestMapping("/products")
 public class ProductController {
 
-    private final ProductServiceImplement service;
+    private final ProductService service;
 
     @PostMapping
     public ResponseEntity<ProductResponseDTO> createProduct(@RequestBody ProductRequestDTO requestDTO){
@@ -40,10 +40,10 @@ public class ProductController {
         return new ResponseEntity<>(service.findAllProducts(), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void>  deleteProduct(@PathVariable UUID id){
-        service.deleteProduct(id);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/delete/{productId}")
+    public ResponseEntity<Void>  deleteProduct(@PathVariable UUID productId){
+        service.deleteProduct(productId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

@@ -44,4 +44,10 @@ public class ProductMapper {
         return entity;
     }
 
+    public static Product deleteProduct(Product product) {
+        product.setActive(Boolean.FALSE);
+        product.setUpdatedAt(LocalDateTime.now());
+        return product;
+    }
+
 }
