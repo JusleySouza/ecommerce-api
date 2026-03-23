@@ -5,6 +5,7 @@ import br.com.indra.jusley_freitas.dto.request.ProductRequestDTO;
 import br.com.indra.jusley_freitas.dto.request.UpdatePriceProductDTO;
 import br.com.indra.jusley_freitas.dto.request.UpdateProductDTO;
 import br.com.indra.jusley_freitas.dto.response.ProductResponseDTO;
+import br.com.indra.jusley_freitas.exception.ResourceNotFoundException;
 import br.com.indra.jusley_freitas.mapper.PriceHistoryMapper;
 import br.com.indra.jusley_freitas.mapper.ProductMapper;
 import br.com.indra.jusley_freitas.model.PriceHistory;
@@ -39,7 +40,8 @@ public class ProductServiceImplement implements ProductService {
     }
 
     public void updateProduct(UpdateProductDTO updateProductDTO, UUID productId){
-        Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
+        Product product = productRepository.findById(productId).orElseThrow(() ->
+                new ResourceNotFoundException("We were unable to find a product with this ID: " + productId));
 
         product = ProductMapper.updateEntity(product, updateProductDTO);
 
@@ -48,9 +50,9 @@ public class ProductServiceImplement implements ProductService {
     }
 
     @Transactional
-    public void updatePriceProduct(UpdatePriceProductDTO productDTO, UUID id){
-        Product product = productRepository.findById(id).
-                orElseThrow(() -> new RuntimeException("Product not found"));
+    public void updatePriceProduct(UpdatePriceProductDTO productDTO, UUID productId){
+        Product product = productRepository.findById(productId).
+                orElseThrow(() -> new ResourceNotFoundException("We were unable to find a product with this ID: " + productId));
 
         if (product.getPrice().compareTo(productDTO.price()) != 0) {
             PriceHistory history = PriceHistoryMapper.toEntity( product, productDTO);
@@ -64,11 +66,8 @@ public class ProductServiceImplement implements ProductService {
     }
 
     public ProductResponseDTO findProductById(UUID productId){
-        Product product = productRepository.findById(productId).get();
-
-        if(product == null){
-            throw new RuntimeException("Product not found");
-        }
+        Product product = productRepository.findById(productId).orElseThrow(() ->
+                new ResourceNotFoundException("We were unable to find a product with this ID: " + productId));
 
         responseDTO = ProductMapper.toResponse(product);
 
@@ -90,7 +89,8 @@ public class ProductServiceImplement implements ProductService {
     }
 
     public void deleteProduct(UUID productId){
-        Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
+        Product product = productRepository.findById(productId).orElseThrow(() ->
+                new ResourceNotFoundException("We were unable to find a product with this ID: " + productId));
 
         product = ProductMapper.deleteProduct(product);
 
