@@ -1,5 +1,6 @@
 package br.com.indra.jusley_freitas.service.implement;
 
+import br.com.indra.jusley_freitas.config.LoggerConfig;
 import br.com.indra.jusley_freitas.dto.response.HistoryProductResponseDTO;
 import br.com.indra.jusley_freitas.mapper.PriceHistoryMapper;
 import br.com.indra.jusley_freitas.model.PriceHistory;
@@ -21,6 +22,8 @@ public class PriceHistoryServiceImplement implements PriceHistoryService {
     @Transactional(readOnly = true)
     public List<HistoryProductResponseDTO> getHistoryByProductId(UUID productId) {
         List<PriceHistory> priceHistories = historyRepository.findByProductsId(productId);
+
+        LoggerConfig.LOGGER_PRICE_HISTORY.info(" Price history of the successfully returned product!");
         return PriceHistoryMapper.toResponseList(priceHistories);
     }
 }

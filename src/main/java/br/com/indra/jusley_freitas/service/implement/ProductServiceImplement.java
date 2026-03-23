@@ -1,5 +1,6 @@
 package br.com.indra.jusley_freitas.service.implement;
 
+import br.com.indra.jusley_freitas.config.LoggerConfig;
 import br.com.indra.jusley_freitas.dto.request.ProductRequestDTO;
 import br.com.indra.jusley_freitas.dto.request.UpdatePriceProductDTO;
 import br.com.indra.jusley_freitas.dto.request.UpdateProductDTO;
@@ -32,6 +33,8 @@ public class ProductServiceImplement implements ProductService {
     public ProductResponseDTO createProduct(ProductRequestDTO requestDTO){
         Product product = ProductMapper.toEntity(requestDTO);
         productRepository.save(product);
+
+        LoggerConfig.LOGGER_PRODUCT.info("Product: " + product.getName() + " created successfully!");
         return ProductMapper.toResponse(product);
     }
 
@@ -39,6 +42,8 @@ public class ProductServiceImplement implements ProductService {
         Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
 
         product = ProductMapper.updateEntity(product, updateProductDTO);
+
+        LoggerConfig.LOGGER_PRODUCT.info("Product data: " + product.getName() + " updated successfully!");
         productRepository.save(product);
     }
 
@@ -54,6 +59,7 @@ public class ProductServiceImplement implements ProductService {
 
         product = ProductMapper.updatePriceProduct(product, productDTO);
 
+        LoggerConfig.LOGGER_PRODUCT.info("Product prices: " + product.getName() + " updated successfully!");
         productRepository.saveAndFlush(product);
     }
 
@@ -66,6 +72,7 @@ public class ProductServiceImplement implements ProductService {
 
         responseDTO = ProductMapper.toResponse(product);
 
+        LoggerConfig.LOGGER_PRODUCT.info("Product: " + product.getName() + " returned successfully!");
         return responseDTO;
     }
 
@@ -77,6 +84,8 @@ public class ProductServiceImplement implements ProductService {
         for (Product product : products) {
             listResponse.add(ProductMapper.toResponse(product));
         }
+
+        LoggerConfig.LOGGER_PRODUCT.info("Product list successfully executed!");
         return listResponse;
     }
 
@@ -84,6 +93,8 @@ public class ProductServiceImplement implements ProductService {
         Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
 
         product = ProductMapper.deleteProduct(product);
+
+        LoggerConfig.LOGGER_PRODUCT.info("Product data: " + product.getName() + " deleted successfully!");
         productRepository.save(product);
     }
 
