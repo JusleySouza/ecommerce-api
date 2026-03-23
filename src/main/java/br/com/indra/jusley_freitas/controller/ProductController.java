@@ -3,7 +3,9 @@ package br.com.indra.jusley_freitas.controller;
 import br.com.indra.jusley_freitas.dto.request.ProductRequestDTO;
 import br.com.indra.jusley_freitas.dto.request.UpdatePriceProductDTO;
 import br.com.indra.jusley_freitas.dto.request.UpdateProductDTO;
+import br.com.indra.jusley_freitas.dto.response.HistoryProductResponseDTO;
 import br.com.indra.jusley_freitas.dto.response.ProductResponseDTO;
+import br.com.indra.jusley_freitas.service.PriceHistoryService;
 import br.com.indra.jusley_freitas.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,7 @@ import java.util.UUID;
 public class ProductController {
 
     private final ProductService service;
+    private final PriceHistoryService historyService;
 
     @PostMapping
     public ResponseEntity<ProductResponseDTO> createProduct(@RequestBody ProductRequestDTO requestDTO){
@@ -51,6 +54,11 @@ public class ProductController {
     public ResponseEntity<Void>  deleteProduct(@PathVariable UUID productId){
         service.deleteProduct(productId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/{productId}/price-history")
+    public ResponseEntity<List<HistoryProductResponseDTO>> getPriceHistory(@PathVariable UUID productId){
+        return new ResponseEntity<>(historyService.getHistoryByProductId(productId), HttpStatus.OK);
     }
 
 }
