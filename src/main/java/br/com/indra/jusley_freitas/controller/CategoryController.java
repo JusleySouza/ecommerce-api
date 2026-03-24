@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,6 +32,13 @@ public class CategoryController {
     @Operation(summary = "Search all categories.", description = "Returns all saved categories.")
     public ResponseEntity<List<CategoryResponseDTO>> getAllCategories() {
         return new ResponseEntity<>(service.findAllCategories(), HttpStatus.OK);
+    }
+
+    @PutMapping("/{categoryId}")
+    @Operation(summary = "Update a category", description = "Update a new category with the provided details.")
+    public ResponseEntity<Void>  updateCategory(@PathVariable UUID categoryId, @Valid @RequestBody CategoryRequestDTO request){
+        service.updateCategory(request, categoryId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
