@@ -5,6 +5,7 @@ import br.com.indra.jusley_freitas.dto.request.ProductRequestDTO;
 import br.com.indra.jusley_freitas.dto.request.UpdatePriceProductDTO;
 import br.com.indra.jusley_freitas.dto.request.UpdateProductDTO;
 import br.com.indra.jusley_freitas.dto.response.ProductResponseDTO;
+import br.com.indra.jusley_freitas.exception.DeleteNotAllowedException;
 import br.com.indra.jusley_freitas.exception.DuplicateSkuException;
 import br.com.indra.jusley_freitas.exception.ResourceNotFoundException;
 import br.com.indra.jusley_freitas.mapper.PriceHistoryMapper;
@@ -72,9 +73,10 @@ public class ProductServiceImplement implements ProductService {
     }
 
     public ProductResponseDTO findProductById(UUID productId){
-        Product product = productRepository.findById(productId).orElseThrow(() ->
-                new ResourceNotFoundException("We were unable to find a product with this ID: " + productId));
-
+        Product product = productRepository.findByIdAndActiveTrue(productId);
+            if(product == null) {
+               throw new ResourceNotFoundException("We were unable to find a product with this ID: " + productId);
+            }
         responseDTO = ProductMapper.toResponse(product);
 
         LoggerConfig.LOGGER_PRODUCT.info("Product: " + product.getName() + " returned successfully!");
@@ -84,7 +86,7 @@ public class ProductServiceImplement implements ProductService {
     public List<ProductResponseDTO> findAllProducts(){
         listResponse = new ArrayList<>();
 
-        List<Product> products = productRepository.findAll();
+        List<Product> products = productRepository.findAllByActiveTrue();
 
         for (Product product : products) {
             listResponse.add(ProductMapper.toResponse(product));
@@ -97,6 +99,10 @@ public class ProductServiceImplement implements ProductService {
     public void deleteProduct(UUID productId){
         Product product = productRepository.findById(productId).orElseThrow(() ->
                 new ResourceNotFoundException("We were unable to find a product with this ID: " + productId));
+
+        if(product.getActive() == Boolean.FALSE) {
+            throw new DeleteNotAllowedException("This product is already inactive.");
+        }
 
         product = ProductMapper.deleteProduct(product);
 
