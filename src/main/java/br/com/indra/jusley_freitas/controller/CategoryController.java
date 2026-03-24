@@ -48,4 +48,10 @@ public class CategoryController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @GetMapping("/{categoryId}")
+    @Operation(summary = "Search category by ID.", description = "Returns the category with the specified ID.")
+    public ResponseEntity<CategoryResponseDTO> findByCategoryId(@PathVariable UUID categoryId) {
+        return new ResponseEntity<>(service.findByCategoryId(categoryId), HttpStatus.OK);
+    }
+
 }
