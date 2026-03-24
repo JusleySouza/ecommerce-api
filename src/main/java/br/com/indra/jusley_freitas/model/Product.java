@@ -55,4 +55,8 @@ public class Product {
     @Column(name = "updated")
     private LocalDateTime updatedAt;
 
+    @ManyToOne
+    @JoinColumn(name = "idCategory")
+    private Category category;
+
 }
