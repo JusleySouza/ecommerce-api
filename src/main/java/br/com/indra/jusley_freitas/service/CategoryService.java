@@ -18,4 +18,6 @@ public interface CategoryService {
 
     public void deleteCategory(UUID categoryId);
 
+    public CategoryResponseDTO findByCategoryId(UUID categoryId);
+
 }

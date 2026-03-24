@@ -22,6 +22,7 @@ public class CategoryServiceImplement implements CategoryService {
 
     private final CategoryRepository categoryRepository;
     private List<CategoryResponseDTO> listResponse;
+    private CategoryResponseDTO responseDTO;
 
     public CategoryResponseDTO createCategory(CategoryRequestDTO requestDTO) {
         Category category = CategoryMapper.toModel(requestDTO);
@@ -63,6 +64,17 @@ public class CategoryServiceImplement implements CategoryService {
 
         LoggerConfig.LOGGER_CATEGORY.info("Category: " + category.getName() + " deleted successfully!");
         categoryRepository.delete(category);
+    }
+
+    @Override
+    public CategoryResponseDTO findByCategoryId(UUID categoryId) {
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() ->
+                new ResourceNotFoundException("We were unable to find a category with this ID: " + categoryId));
+
+        responseDTO = CategoryMapper.toResponse(category);
+
+        LoggerConfig.LOGGER_CATEGORY.info("Category found successfully!");
+        return responseDTO;
     }
 
     private void hasDuplicateName(Category category) {
