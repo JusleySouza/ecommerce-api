@@ -9,6 +9,7 @@ import br.com.indra.jusley_freitas.service.PriceHistoryService;
 import br.com.indra.jusley_freitas.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,20 +29,20 @@ public class ProductController {
 
     @PostMapping
     @Operation(summary = "Create a product", description = "Create a new product with the provided details.")
-    public ResponseEntity<ProductResponseDTO> createProduct(@RequestBody ProductRequestDTO requestDTO){
+    public ResponseEntity<ProductResponseDTO> createProduct(@Valid @RequestBody ProductRequestDTO requestDTO){
         return new ResponseEntity<>(service.createProduct(requestDTO), HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{productId}")
     @Operation(summary = "Update a product", description = "Update a new product with the provided details.")
-    public ResponseEntity<Void>  updateProduct(@PathVariable UUID productId, @RequestBody UpdateProductDTO product){
+    public ResponseEntity<Void>  updateProduct(@PathVariable UUID productId, @Valid @RequestBody UpdateProductDTO product){
         service.updateProduct(product, productId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PatchMapping("/update/price/{productId}")
     @Operation(summary = "Update the product price", description = "Update the product price with the new value provided.")
-    public ResponseEntity<Void>  updatePriceProduct(@PathVariable UUID productId, @RequestBody UpdatePriceProductDTO product){
+    public ResponseEntity<Void>  updatePriceProduct(@PathVariable UUID productId, @Valid @RequestBody UpdatePriceProductDTO product){
         service.updatePriceProduct(product, productId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
