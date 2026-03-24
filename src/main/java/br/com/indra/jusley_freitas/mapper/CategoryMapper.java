@@ -4,6 +4,8 @@ import br.com.indra.jusley_freitas.dto.request.category.CategoryRequestDTO;
 import br.com.indra.jusley_freitas.dto.response.CategoryResponseDTO;
 import br.com.indra.jusley_freitas.model.Category;
 
+import java.time.LocalDateTime;
+
 public class CategoryMapper {
 
     public static Category toModel(CategoryRequestDTO requestDTO) {
@@ -19,6 +21,12 @@ public class CategoryMapper {
                 category.getCreatedAt(),
                 category.getUpdatedAt()
         );
+    }
+
+    public static Category updateEntity(Category entity, CategoryRequestDTO dto) {
+        entity.setName(dto.name());
+        entity.setUpdatedAt(LocalDateTime.now());
+        return entity;
     }
 
 }
