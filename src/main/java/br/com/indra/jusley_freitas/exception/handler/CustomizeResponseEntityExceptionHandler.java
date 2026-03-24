@@ -1,10 +1,16 @@
 package br.com.indra.jusley_freitas.exception.handler;
 
 import br.com.indra.jusley_freitas.config.LoggerConfig;
+import br.com.indra.jusley_freitas.dto.error.FieldError;
+import br.com.indra.jusley_freitas.dto.error.ResponseError;
 import br.com.indra.jusley_freitas.exception.ExceptionResponse;
 import br.com.indra.jusley_freitas.exception.ResourceNotFoundException;
+import br.com.indra.jusley_freitas.exception.ValidationException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +18,8 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 @RestController
@@ -31,6 +39,17 @@ public class CustomizeResponseEntityExceptionHandler extends ResponseEntityExcep
                 new Date(), exception.getMessage(), request.getDescription(false));
         LoggerConfig.LOGGER_EXCEPTION.error(exception.getMessage());
         return new  ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException exception, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        List<FieldError> errors = exception.getBindingResult().getFieldErrors().stream()
+                .map(fieldError -> new FieldError(fieldError.getField(), fieldError.getDefaultMessage()))
+                .collect(Collectors.toList());
+        ResponseError responseError = new ResponseError(errors);
+        LoggerConfig.LOGGER_EXCEPTION.error(exception.getMessage());
+        return new ResponseEntity<>(responseError, HttpStatus.BAD_REQUEST);
     }
 
 }
