@@ -24,4 +24,6 @@ public interface ProductService {
 
     public void deleteProduct(UUID productId);
 
+    public void reactivateProduct(UUID productId);
+
 }

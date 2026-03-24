@@ -5,7 +5,7 @@ import br.com.indra.jusley_freitas.dto.request.ProductRequestDTO;
 import br.com.indra.jusley_freitas.dto.request.UpdatePriceProductDTO;
 import br.com.indra.jusley_freitas.dto.request.UpdateProductDTO;
 import br.com.indra.jusley_freitas.dto.response.ProductResponseDTO;
-import br.com.indra.jusley_freitas.exception.DeleteNotAllowedException;
+import br.com.indra.jusley_freitas.exception.UpdatedNotAllowedException;
 import br.com.indra.jusley_freitas.exception.DuplicateSkuException;
 import br.com.indra.jusley_freitas.exception.ResourceNotFoundException;
 import br.com.indra.jusley_freitas.mapper.PriceHistoryMapper;
@@ -101,12 +101,26 @@ public class ProductServiceImplement implements ProductService {
                 new ResourceNotFoundException("We were unable to find a product with this ID: " + productId));
 
         if(product.getActive() == Boolean.FALSE) {
-            throw new DeleteNotAllowedException("This product is already inactive.");
+            throw new UpdatedNotAllowedException("This product is already inactive.");
         }
 
         product = ProductMapper.deleteProduct(product);
 
         LoggerConfig.LOGGER_PRODUCT.info("Product data: " + product.getName() + " deleted successfully!");
+        productRepository.save(product);
+    }
+
+    public void reactivateProduct(UUID productId){
+        Product product = productRepository.findById(productId).orElseThrow(() ->
+                new ResourceNotFoundException("We were unable to find a product with this ID: " + productId));
+
+        if(product.getActive() == Boolean.TRUE) {
+            throw new UpdatedNotAllowedException("This product is already active.");
+        }
+
+        product = ProductMapper.reactivateProduct(product);
+
+        LoggerConfig.LOGGER_PRODUCT.info("Product data: " + product.getName() + " activated successfully!");
         productRepository.save(product);
     }
 

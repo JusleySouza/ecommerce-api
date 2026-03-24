@@ -66,6 +66,13 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PatchMapping("/reactivate/{productId}")
+    @Operation(summary = "Reactivate the product by ID.", description = "It logically activates the product.")
+    public ResponseEntity<Void>  reactivateProduct(@PathVariable UUID productId){
+        service.reactivateProduct(productId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     @GetMapping("/{productId}/price-history")
     @Operation(summary = "Search history by ID.", description = "Returns the price history of the product.")
     public ResponseEntity<List<HistoryProductResponseDTO>> getPriceHistory(@PathVariable UUID productId){

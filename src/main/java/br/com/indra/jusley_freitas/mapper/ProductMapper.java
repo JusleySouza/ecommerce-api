@@ -57,4 +57,10 @@ public class ProductMapper {
         return product;
     }
 
+    public static Product reactivateProduct(Product product) {
+        product.setActive(Boolean.TRUE);
+        product.setUpdatedAt(LocalDateTime.now());
+        return product;
+    }
+
 }
