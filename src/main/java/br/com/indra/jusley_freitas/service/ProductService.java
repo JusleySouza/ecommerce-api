@@ -1,8 +1,8 @@
 package br.com.indra.jusley_freitas.service;
 
-import br.com.indra.jusley_freitas.dto.request.ProductRequestDTO;
-import br.com.indra.jusley_freitas.dto.request.UpdatePriceProductDTO;
-import br.com.indra.jusley_freitas.dto.request.UpdateProductDTO;
+import br.com.indra.jusley_freitas.dto.request.product.ProductRequestDTO;
+import br.com.indra.jusley_freitas.dto.request.product.UpdatePriceProductDTO;
+import br.com.indra.jusley_freitas.dto.request.product.UpdateProductDTO;
 import br.com.indra.jusley_freitas.dto.response.ProductResponseDTO;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package br.com.indra.jusley_freitas.dto.request;
+package br.com.indra.jusley_freitas.dto.request.product;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;

@@ -1,6 +1,6 @@
 package br.com.indra.jusley_freitas.mapper;
 
-import br.com.indra.jusley_freitas.dto.request.UpdatePriceProductDTO;
+import br.com.indra.jusley_freitas.dto.request.product.UpdatePriceProductDTO;
 import br.com.indra.jusley_freitas.dto.response.HistoryProductResponseDTO;
 import br.com.indra.jusley_freitas.model.PriceHistory;
 import br.com.indra.jusley_freitas.model.Product;
@@ -23,7 +23,6 @@ public class PriceHistoryMapper {
     public static HistoryProductResponseDTO toResponse(PriceHistory entity) {
         return new HistoryProductResponseDTO(
                 entity.getId(),
-                //entity.getProduct() != null ? String.valueOf(entity.getProduct().getId()) : null,
                 entity.getProduct().getName(),
                 entity.getOldPrice(),
                 entity.getNewPrice(),
