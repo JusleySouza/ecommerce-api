@@ -11,11 +11,15 @@ import br.com.indra.jusley_freitas.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class CategoryServiceImplement implements CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private List<CategoryResponseDTO> listResponse;
 
     public CategoryResponseDTO createCategory(CategoryRequestDTO requestDTO) {
         Category categoryEntity = categoryRepository.findByName(requestDTO.name());
@@ -30,6 +34,18 @@ public class CategoryServiceImplement implements CategoryService {
 
         LoggerConfig.LOGGER_CATEGORY.info("Category: " + category.getName() + " created successfully!");
         return CategoryMapper.toResponse(category);
+    }
+
+    public List<CategoryResponseDTO> findAllCategories() {
+        listResponse = new ArrayList<>();
+        List<Category> categories = categoryRepository.findAll();
+
+        for(Category category : categories) {
+            listResponse.add(CategoryMapper.toResponse(category));
+        }
+
+        LoggerConfig.LOGGER_CATEGORY.info("Category list successfully executed!");
+        return listResponse;
     }
 
 }
