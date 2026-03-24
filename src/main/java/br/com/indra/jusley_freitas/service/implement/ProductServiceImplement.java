@@ -5,6 +5,7 @@ import br.com.indra.jusley_freitas.dto.request.ProductRequestDTO;
 import br.com.indra.jusley_freitas.dto.request.UpdatePriceProductDTO;
 import br.com.indra.jusley_freitas.dto.request.UpdateProductDTO;
 import br.com.indra.jusley_freitas.dto.response.ProductResponseDTO;
+import br.com.indra.jusley_freitas.exception.DuplicateSkuException;
 import br.com.indra.jusley_freitas.exception.ResourceNotFoundException;
 import br.com.indra.jusley_freitas.mapper.PriceHistoryMapper;
 import br.com.indra.jusley_freitas.mapper.ProductMapper;
@@ -32,6 +33,11 @@ public class ProductServiceImplement implements ProductService {
     private List<ProductResponseDTO> listResponse;
 
     public ProductResponseDTO createProduct(ProductRequestDTO requestDTO){
+        Product productEntity = productRepository.findBySku(requestDTO.sku());
+        if(productEntity != null) {
+            throw new DuplicateSkuException("Could not register product. There is already a product registered with this sku: " + requestDTO.sku());
+        }
+
         Product product = ProductMapper.toEntity(requestDTO);
         productRepository.save(product);
 
