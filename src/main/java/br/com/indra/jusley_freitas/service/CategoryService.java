@@ -16,4 +16,6 @@ public interface CategoryService {
 
     public void updateCategory(CategoryRequestDTO requestDTO, UUID categoryId);
 
+    public void deleteCategory(UUID categoryId);
+
 }

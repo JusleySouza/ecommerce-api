@@ -56,6 +56,15 @@ public class CategoryServiceImplement implements CategoryService {
         categoryRepository.save(category);
     }
 
+    @Override
+    public void deleteCategory(UUID categoryId) {
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() ->
+                new ResourceNotFoundException("We were unable to find a category with this ID: " + categoryId));
+
+        LoggerConfig.LOGGER_CATEGORY.info("Category: " + category.getName() + " deleted successfully!");
+        categoryRepository.delete(category);
+    }
+
     private void hasDuplicateName(Category category) {
         Category categoryEntityName = categoryRepository.findByName(category.getName());
         if(categoryEntityName != null) {
