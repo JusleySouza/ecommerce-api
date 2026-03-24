@@ -4,6 +4,7 @@ import br.com.indra.jusley_freitas.config.LoggerConfig;
 import br.com.indra.jusley_freitas.dto.request.category.CategoryRequestDTO;
 import br.com.indra.jusley_freitas.dto.response.CategoryResponseDTO;
 import br.com.indra.jusley_freitas.exception.DuplicateCategoryException;
+import br.com.indra.jusley_freitas.exception.ResourceNotFoundException;
 import br.com.indra.jusley_freitas.mapper.CategoryMapper;
 import br.com.indra.jusley_freitas.model.Category;
 import br.com.indra.jusley_freitas.repository.CategoryRepository;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -22,14 +24,8 @@ public class CategoryServiceImplement implements CategoryService {
     private List<CategoryResponseDTO> listResponse;
 
     public CategoryResponseDTO createCategory(CategoryRequestDTO requestDTO) {
-        Category categoryEntity = categoryRepository.findByName(requestDTO.name());
-
-        if(categoryEntity != null) {
-            throw new DuplicateCategoryException("Could not register category. " +
-                    "There is already a category registered with this name: " + categoryEntity.getName());
-        }
-
         Category category = CategoryMapper.toModel(requestDTO);
+        hasDuplicateName(category);
         categoryRepository.save(category);
 
         LoggerConfig.LOGGER_CATEGORY.info("Category: " + category.getName() + " created successfully!");
@@ -46,6 +42,26 @@ public class CategoryServiceImplement implements CategoryService {
 
         LoggerConfig.LOGGER_CATEGORY.info("Category list successfully executed!");
         return listResponse;
+    }
+
+    @Override
+    public void updateCategory(CategoryRequestDTO requestDTO, UUID categoryId) {
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() ->
+                new ResourceNotFoundException("We were unable to find a category with this ID: " + categoryId));
+
+        category = CategoryMapper.updateEntity(category, requestDTO);
+        hasDuplicateName(category);
+
+        LoggerConfig.LOGGER_CATEGORY.info("Category data: " + category.getName() + " updated successfully!");
+        categoryRepository.save(category);
+    }
+
+    private void hasDuplicateName(Category category) {
+        Category categoryEntityName = categoryRepository.findByName(category.getName());
+        if(categoryEntityName != null) {
+            throw new DuplicateCategoryException("Could not register category. " +
+                    "There is already a category registered with this name: " + category.getName());
+        }
     }
 
 }

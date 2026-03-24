@@ -5,6 +5,7 @@ import br.com.indra.jusley_freitas.dto.response.CategoryResponseDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public interface CategoryService {
@@ -12,5 +13,7 @@ public interface CategoryService {
     public CategoryResponseDTO createCategory(CategoryRequestDTO requestDTO);
 
     public List<CategoryResponseDTO> findAllCategories();
+
+    public void updateCategory(CategoryRequestDTO requestDTO, UUID categoryId);
 
 }
