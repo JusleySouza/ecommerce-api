@@ -7,8 +7,8 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UuidGenerator;
 import org.hibernate.type.SqlTypes;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -17,8 +17,8 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "products", schema = "JP_CAPACITACAO")
-public class Product {
+@Table(name = "sub_categories", schema = "JP_CAPACITACAO")
+public class SubCategory {
 
     @Id
     @GeneratedValue
@@ -27,26 +27,11 @@ public class Product {
     @Column(name = "id", updatable = false, nullable = false, unique = true)
     private UUID id;
 
-    @Column(name = "name",  nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @Column(name = "description",   nullable = false)
+    @Column(name = "description", nullable = false)
     private String description;
-
-    @Column(name = "sku", nullable = false, unique = true, updatable = false)
-    private String sku;
-
-    @Column(name = "price", nullable = false)
-    private BigDecimal price;
-
-    @Column(name = "cost_price", nullable = false)
-    private BigDecimal costPrice;
-
-    @Column(name = "stock_quantity", nullable = false)
-    private int stockQuantity;
-
-    @Column(name = "active", nullable = false)
-    private Boolean active;
 
     @Column(name = "created", nullable = false)
     @CreationTimestamp
@@ -56,7 +41,11 @@ public class Product {
     private LocalDateTime updatedAt;
 
     @ManyToOne
+    @JoinColumn(name = "idCategory")
+    private Category category;
+
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "idSubCategory")
-    private SubCategory subCategory;
+    private List<Product> listProducts;
 
 }

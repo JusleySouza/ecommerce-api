@@ -39,6 +39,6 @@ public class Category {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "idCategory")
-    private List<Product> listProduct;
+    private List<SubCategory> listSubCategory;
 
 }
