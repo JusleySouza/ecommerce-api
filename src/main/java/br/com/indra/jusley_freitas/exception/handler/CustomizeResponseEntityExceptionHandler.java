@@ -3,6 +3,7 @@ package br.com.indra.jusley_freitas.exception.handler;
 import br.com.indra.jusley_freitas.config.LoggerConfig;
 import br.com.indra.jusley_freitas.dto.error.FieldError;
 import br.com.indra.jusley_freitas.dto.error.ResponseError;
+import br.com.indra.jusley_freitas.exception.DuplicateSkuException;
 import br.com.indra.jusley_freitas.exception.ExceptionResponse;
 import br.com.indra.jusley_freitas.exception.ResourceNotFoundException;
 import br.com.indra.jusley_freitas.exception.ValidationException;
@@ -50,6 +51,14 @@ public class CustomizeResponseEntityExceptionHandler extends ResponseEntityExcep
         ResponseError responseError = new ResponseError(errors);
         LoggerConfig.LOGGER_EXCEPTION.error(exception.getMessage());
         return new ResponseEntity<>(responseError, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(DuplicateSkuException.class)
+    public final ResponseEntity<ExceptionResponse> handleDuplicateSkuExceptions(Exception exception, WebRequest request){
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date(), exception.getMessage(), request.getDescription(false));
+        LoggerConfig.LOGGER_EXCEPTION.error(exception.getMessage());
+        return new  ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
     }
 
 }
