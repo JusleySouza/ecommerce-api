@@ -79,7 +79,7 @@ public class SubCategoryServiceImplement implements SubCategoryService {
     }
 
     private void hasDuplicateNameUpdate(SubCategory subCategory) {
-        boolean exists = subCategoryRepository.existsByNameAndCategoryIdAndIdNot(
+        boolean exists = subCategoryRepository.existsByNameAndCategoryIdAndId(
                 subCategory.getName(), subCategory.getCategory().getId(), subCategory.getId());
         if (exists) {
             throw new DuplicateCategoryException("Another SubCategory already exists with this name in this category: " + subCategory.getName());
