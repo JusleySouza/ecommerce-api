@@ -5,6 +5,8 @@ import br.com.indra.jusley_freitas.dto.response.SubCategoryResponseDTO;
 import br.com.indra.jusley_freitas.model.Category;
 import br.com.indra.jusley_freitas.model.SubCategory;
 
+import java.util.List;
+
 public class SubCategoryMapper {
 
     public static SubCategory toModel(SubCategoryRequestDTO requestDTO, Category category) {
@@ -24,6 +26,12 @@ public class SubCategoryMapper {
                 subCategory.getUpdatedAt(),
                 subCategory.getCategory().getId()
         );
+    }
+
+    public static List<SubCategoryResponseDTO> toResponseList(List<SubCategory> subCategories) {
+        return subCategories.stream()
+                .map(SubCategoryMapper::toResponse)
+                .toList();
     }
 
     public static SubCategory updateEntity(SubCategory subCategory, SubCategoryRequestDTO requestDTO, Category category) {
