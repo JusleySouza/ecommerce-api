@@ -1,11 +1,10 @@
 package br.com.indra.jusley_freitas.service.implement;
 
 import br.com.indra.jusley_freitas.config.LoggerConfig;
-import br.com.indra.jusley_freitas.dto.response.HistoryProductResponseDTO;
+import br.com.indra.jusley_freitas.dto.response.history.HistoryProductResponseDTO;
 import br.com.indra.jusley_freitas.exception.ResourceNotFoundException;
 import br.com.indra.jusley_freitas.mapper.PriceHistoryMapper;
 import br.com.indra.jusley_freitas.model.PriceHistory;
-import br.com.indra.jusley_freitas.model.Product;
 import br.com.indra.jusley_freitas.repository.PriceHistoryRepository;
 import br.com.indra.jusley_freitas.repository.ProductRepository;
 import br.com.indra.jusley_freitas.service.PriceHistoryService;
@@ -25,7 +24,7 @@ public class PriceHistoryServiceImplement implements PriceHistoryService {
 
     @Transactional(readOnly = true)
     public List<HistoryProductResponseDTO> getHistoryByProductId(UUID productId) {
-        Product product = productRepository.findById(productId)
+        productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("We were unable to find a product with this ID: " + productId));
 
         List<PriceHistory> priceHistories = historyRepository.findByProductsId(productId);

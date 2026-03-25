@@ -1,7 +1,7 @@
 package br.com.indra.jusley_freitas.mapper;
 
 import br.com.indra.jusley_freitas.dto.request.product.UpdatePriceProductDTO;
-import br.com.indra.jusley_freitas.dto.response.HistoryProductResponseDTO;
+import br.com.indra.jusley_freitas.dto.response.history.HistoryProductResponseDTO;
 import br.com.indra.jusley_freitas.model.PriceHistory;
 import br.com.indra.jusley_freitas.model.Product;
 

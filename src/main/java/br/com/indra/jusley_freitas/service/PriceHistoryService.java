@@ -1,6 +1,6 @@
 package br.com.indra.jusley_freitas.service;
 
-import br.com.indra.jusley_freitas.dto.response.HistoryProductResponseDTO;
+import br.com.indra.jusley_freitas.dto.response.history.HistoryProductResponseDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

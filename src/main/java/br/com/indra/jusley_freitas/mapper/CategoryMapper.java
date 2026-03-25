@@ -1,7 +1,7 @@
 package br.com.indra.jusley_freitas.mapper;
 
 import br.com.indra.jusley_freitas.dto.request.category.CategoryRequestDTO;
-import br.com.indra.jusley_freitas.dto.response.CategoryResponseDTO;
+import br.com.indra.jusley_freitas.dto.response.category.CategoryResponseDTO;
 import br.com.indra.jusley_freitas.model.Category;
 
 import java.time.LocalDateTime;

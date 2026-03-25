@@ -4,7 +4,7 @@ import br.com.indra.jusley_freitas.config.LoggerConfig;
 import br.com.indra.jusley_freitas.dto.request.product.ProductRequestDTO;
 import br.com.indra.jusley_freitas.dto.request.product.UpdatePriceProductDTO;
 import br.com.indra.jusley_freitas.dto.request.product.UpdateProductDTO;
-import br.com.indra.jusley_freitas.dto.response.ProductResponseDTO;
+import br.com.indra.jusley_freitas.dto.response.product.ProductResponseDTO;
 import br.com.indra.jusley_freitas.exception.UpdatedNotAllowedException;
 import br.com.indra.jusley_freitas.exception.DuplicateSkuException;
 import br.com.indra.jusley_freitas.exception.ResourceNotFoundException;
@@ -32,8 +32,6 @@ public class ProductServiceImplement implements ProductService {
     private final ProductRepository productRepository;
     private final PriceHistoryRepository priceRepository;
     private final SubCategoryRepository subCategoryRepository;
-
-    private ProductResponseDTO responseDTO;
     private List<ProductResponseDTO> listResponse;
 
     public ProductResponseDTO createProduct(ProductRequestDTO requestDTO){
@@ -86,10 +84,9 @@ public class ProductServiceImplement implements ProductService {
             if(product == null) {
                throw new ResourceNotFoundException("We were unable to find a product with this ID: " + productId);
             }
-        responseDTO = ProductMapper.toResponse(product);
 
         LoggerConfig.LOGGER_PRODUCT.info("Product: " + product.getName() + " returned successfully!");
-        return responseDTO;
+        return ProductMapper.toResponse(product);
     }
 
     public List<ProductResponseDTO> findAllProducts(){

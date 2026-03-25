@@ -1,7 +1,7 @@
 package br.com.indra.jusley_freitas.mapper;
 
 import br.com.indra.jusley_freitas.dto.request.sub_category.SubCategoryRequestDTO;
-import br.com.indra.jusley_freitas.dto.response.SubCategoryResponseDTO;
+import br.com.indra.jusley_freitas.dto.response.sub_category.SubCategoryResponseDTO;
 import br.com.indra.jusley_freitas.model.Category;
 import br.com.indra.jusley_freitas.model.SubCategory;
 

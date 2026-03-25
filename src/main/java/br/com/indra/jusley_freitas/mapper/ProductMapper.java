@@ -3,7 +3,7 @@ package br.com.indra.jusley_freitas.mapper;
 import br.com.indra.jusley_freitas.dto.request.product.ProductRequestDTO;
 import br.com.indra.jusley_freitas.dto.request.product.UpdatePriceProductDTO;
 import br.com.indra.jusley_freitas.dto.request.product.UpdateProductDTO;
-import br.com.indra.jusley_freitas.dto.response.ProductResponseDTO;
+import br.com.indra.jusley_freitas.dto.response.product.ProductResponseDTO;
 import br.com.indra.jusley_freitas.model.Product;
 import br.com.indra.jusley_freitas.model.SubCategory;
 
