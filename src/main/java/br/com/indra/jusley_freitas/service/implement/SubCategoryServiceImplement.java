@@ -1,12 +1,10 @@
 package br.com.indra.jusley_freitas.service.implement;
 
 import br.com.indra.jusley_freitas.config.LoggerConfig;
-import br.com.indra.jusley_freitas.dto.request.category.CategoryRequestDTO;
 import br.com.indra.jusley_freitas.dto.request.sub_category.SubCategoryRequestDTO;
 import br.com.indra.jusley_freitas.dto.response.SubCategoryResponseDTO;
 import br.com.indra.jusley_freitas.exception.DuplicateCategoryException;
 import br.com.indra.jusley_freitas.exception.ResourceNotFoundException;
-import br.com.indra.jusley_freitas.mapper.CategoryMapper;
 import br.com.indra.jusley_freitas.mapper.SubCategoryMapper;
 import br.com.indra.jusley_freitas.model.Category;
 import br.com.indra.jusley_freitas.model.SubCategory;
@@ -68,6 +66,17 @@ public class SubCategoryServiceImplement implements SubCategoryService {
 
         LoggerConfig.LOGGER_SUB_CATEGORY.info("SubCategory data: " + subCategory.getName() + " updated successfully!");
         subCategoryRepository.save(subCategory);
+    }
+
+    public void deleteSubCategory(UUID categoryId, UUID subCategoryId) {
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() ->
+                new ResourceNotFoundException("We were unable to find a category with this ID: " + categoryId));
+
+        SubCategory subCategory = subCategoryRepository.findById(subCategoryId).orElseThrow(() ->
+                new ResourceNotFoundException("We were unable to find a subCategory with this ID: " + subCategoryId));
+
+        LoggerConfig.LOGGER_SUB_CATEGORY.info("SubCategory data: " + subCategory.getName() + " deleted successfully!");
+        subCategoryRepository.delete(subCategory);
     }
 
 

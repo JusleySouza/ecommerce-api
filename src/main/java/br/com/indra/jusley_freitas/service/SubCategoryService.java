@@ -16,4 +16,6 @@ public interface SubCategoryService {
 
     public void updateSubCategory(UUID categoryId, UUID subCategoryId, SubCategoryRequestDTO requestDTO);
 
+    public void deleteSubCategory(UUID categoryId, UUID subCategoryId);
+
 }
