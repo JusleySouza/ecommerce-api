@@ -14,4 +14,6 @@ public interface SubCategoryRepository extends JpaRepository<SubCategory, UUID> 
     @Query("SELECT sc FROM SubCategory sc JOIN FETCH sc.category WHERE sc.category.id = :categoryId")
     List<SubCategory> findByCategoryId(UUID categoryId);
 
+    boolean existsByNameAndCategoryIdAndIdNot(String name, UUID categoryId, UUID id);
+
 }
