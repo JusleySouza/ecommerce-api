@@ -1,4 +1,4 @@
-package br.com.indra.jusley_freitas.dto.response;
+package br.com.indra.jusley_freitas.dto.response.history;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
