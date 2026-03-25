@@ -59,6 +59,12 @@ public class ProductController {
         return new ResponseEntity<>(service.findAllProducts(), HttpStatus.OK);
     }
 
+    @GetMapping("/subcategory/{subcategoryId}")
+    @Operation(summary = "List products by subcategory.", description = "Returns all products for a given subcategory ID.")
+    public ResponseEntity<List<ProductResponseDTO>> findAllBySubCategoriesId(@PathVariable UUID subcategoryId) {
+        return new ResponseEntity<>(service.findAllProductsBySubCategoryId(subcategoryId), HttpStatus.OK);
+    }
+
     @DeleteMapping("/delete/{productId}")
     @Operation(summary = "Delete the product by ID.", description = "It logically excludes the product.")
     public ResponseEntity<Void>  deleteProduct(@PathVariable UUID productId){
