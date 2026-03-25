@@ -42,7 +42,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/{categoryId}")
-    @Operation(summary = "Delete the category by ID.", description = "It logically excludes the category.")
+    @Operation(summary = "Delete the category by ID.", description = "Delete this category.")
     public ResponseEntity<Void>  deleteCategory(@PathVariable UUID categoryId){
         service.deleteCategory(categoryId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

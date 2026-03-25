@@ -1,6 +1,5 @@
 package br.com.indra.jusley_freitas.controller;
 
-import br.com.indra.jusley_freitas.dto.request.category.CategoryRequestDTO;
 import br.com.indra.jusley_freitas.dto.request.sub_category.SubCategoryRequestDTO;
 import br.com.indra.jusley_freitas.dto.response.SubCategoryResponseDTO;
 import br.com.indra.jusley_freitas.service.SubCategoryService;
@@ -40,6 +39,13 @@ public class SubCategoryController {
     public ResponseEntity<Void>  updateSubCategory(@PathVariable UUID categoryId, @PathVariable UUID subCategoryId,
                                                    @Valid @RequestBody SubCategoryRequestDTO request){
         service.updateSubCategory(categoryId, subCategoryId, request);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/{subCategoryId}")
+    @Operation(summary = "Delete the subcategory by ID", description = "Delete the subcategory.")
+    public ResponseEntity<Void>  deleteSubCategory(@PathVariable UUID categoryId, @PathVariable UUID subCategoryId){
+        service.deleteSubCategory(categoryId, subCategoryId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
