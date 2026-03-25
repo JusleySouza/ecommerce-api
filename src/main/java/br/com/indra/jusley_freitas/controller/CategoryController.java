@@ -1,7 +1,8 @@
 package br.com.indra.jusley_freitas.controller;
 
 import br.com.indra.jusley_freitas.dto.request.category.CategoryRequestDTO;
-import br.com.indra.jusley_freitas.dto.response.CategoryResponseDTO;
+import br.com.indra.jusley_freitas.dto.response.category.CategoryResponseDTO;
+import br.com.indra.jusley_freitas.dto.response.category.CategoryWithProductsResponseDTO;
 import br.com.indra.jusley_freitas.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -52,6 +53,12 @@ public class CategoryController {
     @Operation(summary = "Search category by ID.", description = "Returns the category with the specified ID.")
     public ResponseEntity<CategoryResponseDTO> findByCategoryId(@PathVariable UUID categoryId) {
         return new ResponseEntity<>(service.findByCategoryId(categoryId), HttpStatus.OK);
+    }
+
+    @GetMapping("/{categoryId}/products")
+    @Operation(summary = "List products by category", description = "Returns all products associated with a category")
+    public ResponseEntity<CategoryWithProductsResponseDTO> findProductsByCategory(@PathVariable UUID categoryId) {
+        return new ResponseEntity<>(service.findAllProductsByCategory(categoryId), HttpStatus.OK);
     }
 
 }
