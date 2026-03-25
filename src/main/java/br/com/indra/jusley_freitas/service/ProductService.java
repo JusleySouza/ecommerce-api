@@ -22,6 +22,8 @@ public interface ProductService {
 
     public List<ProductResponseDTO> findAllProducts();
 
+    public List<ProductResponseDTO> findAllProductsBySubCategoryId(UUID subCategoryId);
+
     public void deleteProduct(UUID productId);
 
     public void reactivateProduct(UUID productId);

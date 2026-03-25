@@ -105,6 +105,21 @@ public class ProductServiceImplement implements ProductService {
         return listResponse;
     }
 
+    public List<ProductResponseDTO> findAllProductsBySubCategoryId(UUID subCategoryId) {
+        subCategoryRepository.findById(subCategoryId).orElseThrow(() ->
+                new ResourceNotFoundException("We were unable to find a subcategory with this ID: " + subCategoryId));
+
+        listResponse = new ArrayList<>();
+        List<Product> products = productRepository.findBySubCategoryId(subCategoryId);
+
+        if (products.isEmpty()) {
+            throw new ResourceNotFoundException("No products found for subcategory ID: " + subCategoryId);
+        }
+
+        LoggerConfig.LOGGER_PRODUCT.info("Product list successfully executed!");
+        return ProductMapper.toResponseList(products);
+    }
+
     public void deleteProduct(UUID productId){
         Product product = productRepository.findById(productId).orElseThrow(() ->
                 new ResourceNotFoundException("We were unable to find a product with this ID: " + productId));
