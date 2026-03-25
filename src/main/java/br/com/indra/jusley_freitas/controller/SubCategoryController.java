@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -25,6 +26,12 @@ public class SubCategoryController {
     @Operation(summary = "Create a sub_category", description = "Create a new sub_category with the provided details.")
     public ResponseEntity<SubCategoryResponseDTO> createSubCategory(@PathVariable UUID categoryId, @Valid @RequestBody SubCategoryRequestDTO requestDTO){
         return new ResponseEntity<>(service.createSubCategory(categoryId, requestDTO), HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    @Operation(summary = "List subcategories by category.", description = "Returns all subcategories for a given category ID.")
+    public ResponseEntity<List<SubCategoryResponseDTO>> findAllByCategoriesId(@PathVariable UUID categoryId) {
+        return new ResponseEntity<>(service.findAllSubCategoriesByCategoryId(categoryId), HttpStatus.OK);
     }
 
 }
