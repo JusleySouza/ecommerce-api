@@ -1,5 +1,6 @@
 package br.com.indra.jusley_freitas.controller;
 
+import br.com.indra.jusley_freitas.dto.request.category.CategoryRequestDTO;
 import br.com.indra.jusley_freitas.dto.request.sub_category.SubCategoryRequestDTO;
 import br.com.indra.jusley_freitas.dto.response.SubCategoryResponseDTO;
 import br.com.indra.jusley_freitas.service.SubCategoryService;
@@ -23,7 +24,7 @@ public class SubCategoryController {
     private final SubCategoryService service;
 
     @PostMapping
-    @Operation(summary = "Create a sub_category", description = "Create a new sub_category with the provided details.")
+    @Operation(summary = "Create a subcategory", description = "Create a new subcategory with the provided details.")
     public ResponseEntity<SubCategoryResponseDTO> createSubCategory(@PathVariable UUID categoryId, @Valid @RequestBody SubCategoryRequestDTO requestDTO){
         return new ResponseEntity<>(service.createSubCategory(categoryId, requestDTO), HttpStatus.CREATED);
     }
@@ -32,6 +33,14 @@ public class SubCategoryController {
     @Operation(summary = "List subcategories by category.", description = "Returns all subcategories for a given category ID.")
     public ResponseEntity<List<SubCategoryResponseDTO>> findAllByCategoriesId(@PathVariable UUID categoryId) {
         return new ResponseEntity<>(service.findAllSubCategoriesByCategoryId(categoryId), HttpStatus.OK);
+    }
+
+    @PutMapping("/{subCategoryId}")
+    @Operation(summary = "Update a subcategory", description = "Update a new subcategory with the provided details.")
+    public ResponseEntity<Void>  updateSubCategory(@PathVariable UUID categoryId, @PathVariable UUID subCategoryId,
+                                                   @Valid @RequestBody SubCategoryRequestDTO request){
+        service.updateSubCategory(categoryId, subCategoryId, request);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
