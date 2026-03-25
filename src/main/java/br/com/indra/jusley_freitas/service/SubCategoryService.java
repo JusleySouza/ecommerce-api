@@ -14,4 +14,6 @@ public interface SubCategoryService {
 
     public List<SubCategoryResponseDTO> findAllSubCategoriesByCategoryId(UUID categoryId);
 
+    public void updateSubCategory(UUID categoryId, UUID subCategoryId, SubCategoryRequestDTO requestDTO);
+
 }

@@ -1,10 +1,12 @@
 package br.com.indra.jusley_freitas.service.implement;
 
 import br.com.indra.jusley_freitas.config.LoggerConfig;
+import br.com.indra.jusley_freitas.dto.request.category.CategoryRequestDTO;
 import br.com.indra.jusley_freitas.dto.request.sub_category.SubCategoryRequestDTO;
 import br.com.indra.jusley_freitas.dto.response.SubCategoryResponseDTO;
 import br.com.indra.jusley_freitas.exception.DuplicateCategoryException;
 import br.com.indra.jusley_freitas.exception.ResourceNotFoundException;
+import br.com.indra.jusley_freitas.mapper.CategoryMapper;
 import br.com.indra.jusley_freitas.mapper.SubCategoryMapper;
 import br.com.indra.jusley_freitas.model.Category;
 import br.com.indra.jusley_freitas.model.SubCategory;
@@ -40,8 +42,8 @@ public class SubCategoryServiceImplement implements SubCategoryService {
     }
 
     public List<SubCategoryResponseDTO> findAllSubCategoriesByCategoryId(UUID categoryId) {
-        categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResourceNotFoundException("We were unable to find a category with this ID: " + categoryId));
+        categoryRepository.findById(categoryId).orElseThrow(() ->
+                new ResourceNotFoundException("We were unable to find a category with this ID: " + categoryId));
 
         listResponse = new ArrayList<>();
         List<SubCategory> subCategories = subCategoryRepository.findByCategoryId(categoryId);
@@ -54,11 +56,33 @@ public class SubCategoryServiceImplement implements SubCategoryService {
         return SubCategoryMapper.toResponseList(subCategories);
     }
 
+    public void updateSubCategory(UUID categoryId, UUID subCategoryId, SubCategoryRequestDTO requestDTO) {
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() ->
+                new ResourceNotFoundException("We were unable to find a category with this ID: " + categoryId));
+
+        SubCategory subCategory = subCategoryRepository.findById(subCategoryId).orElseThrow(() ->
+                new ResourceNotFoundException("We were unable to find a subCategory with this ID: " + subCategoryId));
+
+        SubCategoryMapper.updateEntity(subCategory, requestDTO, category);
+        hasDuplicateNameUpdate(subCategory);
+
+        LoggerConfig.LOGGER_SUB_CATEGORY.info("SubCategory data: " + subCategory.getName() + " updated successfully!");
+        subCategoryRepository.save(subCategory);
+    }
+
 
     private void hasDuplicateName(SubCategory subCategory) {
         boolean exists = subCategoryRepository.existsByNameAndCategoryId(subCategory.getName(), subCategory.getCategory().getId());
         if (exists) {
-            throw new DuplicateCategoryException("SubCategory with this name already exists in this category");
+            throw new DuplicateCategoryException("SubCategory already exists in this category with name: " + subCategory.getName());
+        }
+    }
+
+    private void hasDuplicateNameUpdate(SubCategory subCategory) {
+        boolean exists = subCategoryRepository.existsByNameAndCategoryIdAndIdNot(
+                subCategory.getName(), subCategory.getCategory().getId(), subCategory.getId());
+        if (exists) {
+            throw new DuplicateCategoryException("Another SubCategory already exists with this name in this category: " + subCategory.getName());
         }
     }
 
