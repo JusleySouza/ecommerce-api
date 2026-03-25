@@ -2,12 +2,16 @@ package br.com.indra.jusley_freitas.service.implement;
 
 import br.com.indra.jusley_freitas.config.LoggerConfig;
 import br.com.indra.jusley_freitas.dto.request.category.CategoryRequestDTO;
-import br.com.indra.jusley_freitas.dto.response.CategoryResponseDTO;
+import br.com.indra.jusley_freitas.dto.response.category.CategoryResponseDTO;
+import br.com.indra.jusley_freitas.dto.response.category.CategoryWithProductsResponseDTO;
 import br.com.indra.jusley_freitas.exception.DuplicateCategoryException;
 import br.com.indra.jusley_freitas.exception.ResourceNotFoundException;
+import br.com.indra.jusley_freitas.mapper.CategoryAggregationMapper;
 import br.com.indra.jusley_freitas.mapper.CategoryMapper;
 import br.com.indra.jusley_freitas.model.Category;
+import br.com.indra.jusley_freitas.model.Product;
 import br.com.indra.jusley_freitas.repository.CategoryRepository;
+import br.com.indra.jusley_freitas.repository.ProductRepository;
 import br.com.indra.jusley_freitas.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -21,8 +25,8 @@ import java.util.UUID;
 public class CategoryServiceImplement implements CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final ProductRepository productRepository;
     private List<CategoryResponseDTO> listResponse;
-    private CategoryResponseDTO responseDTO;
 
     public CategoryResponseDTO createCategory(CategoryRequestDTO requestDTO) {
         Category category = CategoryMapper.toModel(requestDTO);
@@ -71,10 +75,23 @@ public class CategoryServiceImplement implements CategoryService {
         Category category = categoryRepository.findById(categoryId).orElseThrow(() ->
                 new ResourceNotFoundException("We were unable to find a category with this ID: " + categoryId));
 
-        responseDTO = CategoryMapper.toResponse(category);
-
         LoggerConfig.LOGGER_CATEGORY.info("Category found successfully!");
-        return responseDTO;
+        return CategoryMapper.toResponse(category);
+    }
+
+    @Override
+    public CategoryWithProductsResponseDTO findAllProductsByCategory(UUID categoryId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new ResourceNotFoundException("We were unable to find a category with this ID: " + categoryId));
+
+        List<Product> products = productRepository.findAllByCategoryId(categoryId);
+
+        if (products.isEmpty()) {
+            throw new ResourceNotFoundException("No products found for category ID: " + categoryId);
+        }
+
+        LoggerConfig.LOGGER_CATEGORY.info("Products for category: " + category.getName() + " successfully returned!");
+        return CategoryAggregationMapper.mapToGroupedResponse(category, products);
     }
 
     private void hasDuplicateName(Category category) {

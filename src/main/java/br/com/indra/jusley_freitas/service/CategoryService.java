@@ -1,7 +1,8 @@
 package br.com.indra.jusley_freitas.service;
 
 import br.com.indra.jusley_freitas.dto.request.category.CategoryRequestDTO;
-import br.com.indra.jusley_freitas.dto.response.CategoryResponseDTO;
+import br.com.indra.jusley_freitas.dto.response.category.CategoryResponseDTO;
+import br.com.indra.jusley_freitas.dto.response.category.CategoryWithProductsResponseDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,5 +20,7 @@ public interface CategoryService {
     public void deleteCategory(UUID categoryId);
 
     public CategoryResponseDTO findByCategoryId(UUID categoryId);
+
+    public CategoryWithProductsResponseDTO findAllProductsByCategory(UUID categoryId);
 
 }
