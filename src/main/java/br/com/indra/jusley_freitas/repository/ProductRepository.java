@@ -20,4 +20,7 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
     @Query("SELECT p FROM Product p JOIN FETCH p.subCategory WHERE p.subCategory.id = :subCategoryId")
     List<Product> findBySubCategoryId(UUID subCategoryId);
 
+    @Query("SELECT p FROM Product p JOIN FETCH p.subCategory sc JOIN FETCH sc.category c WHERE c.id = :categoryId")
+    List<Product> findAllByCategoryId(UUID categoryId);
+
 }
