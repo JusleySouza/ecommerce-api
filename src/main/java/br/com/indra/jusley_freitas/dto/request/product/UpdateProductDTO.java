@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.util.UUID;
+
 @Schema(description = "DTO for updating a product. Contains the fields that can be updated for a product in the system.")
 public record UpdateProductDTO(
         @NotEmpty(message = "{name.not.empty}")
@@ -19,5 +21,8 @@ public record UpdateProductDTO(
         @NotNull(message = "{stock.not.null}")
         @Min(value=0, message = "{stock.not.less.than}")
         @Schema(description = "Product stock", type = "int", example = "15")
-        int stockQuantity
+        int stockQuantity,
+        @NotNull(message = "{subcategory.not.null}")
+        @Schema(description = "SubCategory identifier", type = "UUID", example = "7494ef92-cbc1-4ed1-bf9b-f9873f916424")
+        UUID subCategory
 ) {}

@@ -12,8 +12,10 @@ import br.com.indra.jusley_freitas.mapper.PriceHistoryMapper;
 import br.com.indra.jusley_freitas.mapper.ProductMapper;
 import br.com.indra.jusley_freitas.model.PriceHistory;
 import br.com.indra.jusley_freitas.model.Product;
+import br.com.indra.jusley_freitas.model.SubCategory;
 import br.com.indra.jusley_freitas.repository.PriceHistoryRepository;
 import br.com.indra.jusley_freitas.repository.ProductRepository;
+import br.com.indra.jusley_freitas.repository.SubCategoryRepository;
 import br.com.indra.jusley_freitas.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -29,17 +31,21 @@ public class ProductServiceImplement implements ProductService {
 
     private final ProductRepository productRepository;
     private final PriceHistoryRepository priceRepository;
+    private final SubCategoryRepository subCategoryRepository;
 
     private ProductResponseDTO responseDTO;
     private List<ProductResponseDTO> listResponse;
 
     public ProductResponseDTO createProduct(ProductRequestDTO requestDTO){
+        SubCategory subCategory = subCategoryRepository.findById(requestDTO.subCategory()).orElseThrow(() ->
+                new ResourceNotFoundException("We could not find a sub_category with this ID: " + requestDTO.subCategory()));
+
         Product productEntity = productRepository.findBySku(requestDTO.sku());
         if(productEntity != null) {
             throw new DuplicateSkuException("Could not register product. There is already a product registered with this sku: " + requestDTO.sku());
         }
 
-        Product product = ProductMapper.toEntity(requestDTO);
+        Product product = ProductMapper.toEntity(requestDTO, subCategory);
         productRepository.save(product);
 
         LoggerConfig.LOGGER_PRODUCT.info("Product: " + product.getName() + " created successfully!");
@@ -47,10 +53,13 @@ public class ProductServiceImplement implements ProductService {
     }
 
     public void updateProduct(UpdateProductDTO updateProductDTO, UUID productId){
+        SubCategory subCategory = subCategoryRepository.findById(updateProductDTO.subCategory()).orElseThrow(() ->
+                new ResourceNotFoundException("We could not find a sub_category with this ID: " + updateProductDTO.subCategory()));
+
         Product product = productRepository.findById(productId).orElseThrow(() ->
                 new ResourceNotFoundException("We were unable to find a product with this ID: " + productId));
 
-        product = ProductMapper.updateEntity(product, updateProductDTO);
+        product = ProductMapper.updateEntity(product, updateProductDTO, subCategory);
 
         LoggerConfig.LOGGER_PRODUCT.info("Product data: " + product.getName() + " updated successfully!");
         productRepository.save(product);

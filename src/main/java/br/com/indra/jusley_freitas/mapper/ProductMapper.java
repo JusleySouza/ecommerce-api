@@ -5,12 +5,14 @@ import br.com.indra.jusley_freitas.dto.request.product.UpdatePriceProductDTO;
 import br.com.indra.jusley_freitas.dto.request.product.UpdateProductDTO;
 import br.com.indra.jusley_freitas.dto.response.ProductResponseDTO;
 import br.com.indra.jusley_freitas.model.Product;
+import br.com.indra.jusley_freitas.model.SubCategory;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class ProductMapper {
 
-    public static Product toEntity(ProductRequestDTO dto) {
+    public static Product toEntity(ProductRequestDTO dto, SubCategory subCategory) {
         return Product.builder()
                 .name(dto.name())
                 .description(dto.description())
@@ -19,6 +21,7 @@ public class ProductMapper {
                 .costPrice(dto.costPrice())
                 .stockQuantity(dto.stockQuantity())
                 .active(true)
+                .subCategory(subCategory)
                 .build();
     }
 
@@ -32,15 +35,23 @@ public class ProductMapper {
                 entity.getCostPrice(),
                 entity.getStockQuantity(),
                 entity.getActive(),
+                entity.getSubCategory().getId(),
                 entity.getCreatedAt(),
                 entity.getUpdatedAt()
         );
     }
 
-    public static Product updateEntity(Product entity, UpdateProductDTO dto) {
+    public static List<ProductResponseDTO> toResponseList(List<Product> products) {
+        return products.stream()
+                .map(ProductMapper::toResponse)
+                .toList();
+    }
+
+    public static Product updateEntity(Product entity, UpdateProductDTO dto, SubCategory subCategory) {
         entity.setName(dto.name());
         entity.setDescription(dto.description());
         entity.setStockQuantity(dto.stockQuantity());
+        entity.setSubCategory(subCategory);
         entity.setUpdatedAt(LocalDateTime.now());
         return entity;
     }

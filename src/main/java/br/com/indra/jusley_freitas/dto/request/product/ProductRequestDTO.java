@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Schema(description = "DTO for creating a new product. Contains all necessary fields to create a product in the system.")
 public record ProductRequestDTO(
@@ -32,5 +33,8 @@ public record ProductRequestDTO(
         @NotNull(message = "{stock.not.null}")
         @Min(value=0, message = "{stock.not.less.than}")
         @Schema(description = "Product stock", type = "int", example = "15")
-        int stockQuantity
+        int stockQuantity,
+        @NotNull(message = "{subcategory.not.null}")
+        @Schema(description = "SubCategory identifier", type = "UUID", example = "7494ef92-cbc1-4ed1-bf9b-f9873f916424")
+        UUID subCategory
 ) {}
