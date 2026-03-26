@@ -5,6 +5,7 @@ import br.com.indra.jusley_freitas.dto.request.product.UpdatePriceProductDTO;
 import br.com.indra.jusley_freitas.dto.request.product.UpdateProductDTO;
 import br.com.indra.jusley_freitas.dto.response.product.ProductResponseDTO;
 import br.com.indra.jusley_freitas.exception.ResourceNotFoundException;
+import br.com.indra.jusley_freitas.exception.ValidationException;
 import br.com.indra.jusley_freitas.service.PriceHistoryService;
 import br.com.indra.jusley_freitas.service.ProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -120,6 +121,22 @@ class ProductControllerTest {
         when(service.findProductById(productId)).thenThrow(new ResourceNotFoundException("not found"));
 
         mockMvc.perform(get("/products/{productId}", productId)).andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldReturnProductByName() throws Exception {
+        when(service.findByName("Samsung")).thenReturn(responseDTO);
+
+        mockMvc.perform(get("/products/name/{name}", "Samsung")).andExpect(status().isOk());
+
+        verify(service).findByName("Samsung");
+    }
+
+    @Test
+    void shouldReturn422WhenNameIsInvalid() throws Exception {
+        when(service.findByName("A")).thenThrow(new ValidationException("Invalid name"));
+
+        mockMvc.perform(get("/products/name/{name}", "A")).andExpect(status().isUnprocessableEntity());
     }
 
     @Test
