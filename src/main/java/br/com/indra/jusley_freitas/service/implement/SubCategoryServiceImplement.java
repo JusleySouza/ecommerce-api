@@ -3,7 +3,7 @@ package br.com.indra.jusley_freitas.service.implement;
 import br.com.indra.jusley_freitas.config.LoggerConfig;
 import br.com.indra.jusley_freitas.dto.request.sub_category.SubCategoryRequestDTO;
 import br.com.indra.jusley_freitas.dto.response.sub_category.SubCategoryResponseDTO;
-import br.com.indra.jusley_freitas.exception.DuplicateCategoryException;
+import br.com.indra.jusley_freitas.exception.DuplicateSubCategoryException;
 import br.com.indra.jusley_freitas.exception.ResourceNotFoundException;
 import br.com.indra.jusley_freitas.mapper.SubCategoryMapper;
 import br.com.indra.jusley_freitas.model.Category;
@@ -79,7 +79,7 @@ public class SubCategoryServiceImplement implements SubCategoryService {
     private void hasDuplicateName(SubCategory subCategory) {
         boolean exists = subCategoryRepository.existsByNameAndCategoryId(subCategory.getName(), subCategory.getCategory().getId());
         if (exists) {
-            throw new DuplicateCategoryException("SubCategory already exists in this category with name: " + subCategory.getName());
+            throw new DuplicateSubCategoryException("SubCategory already exists in this category with name: " + subCategory.getName());
         }
     }
 
