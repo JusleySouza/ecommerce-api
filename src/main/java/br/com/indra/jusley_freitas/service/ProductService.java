@@ -20,6 +20,8 @@ public interface ProductService {
 
     public ProductResponseDTO findProductById(UUID productId);
 
+    public ProductResponseDTO findByName(String name);
+
     public List<ProductResponseDTO> findAllProducts();
 
     public List<ProductResponseDTO> findAllProductsBySubCategoryId(UUID subCategoryId);

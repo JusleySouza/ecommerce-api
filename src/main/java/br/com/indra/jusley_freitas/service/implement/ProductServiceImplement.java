@@ -8,6 +8,7 @@ import br.com.indra.jusley_freitas.dto.response.product.ProductResponseDTO;
 import br.com.indra.jusley_freitas.exception.UpdatedNotAllowedException;
 import br.com.indra.jusley_freitas.exception.DuplicateSkuException;
 import br.com.indra.jusley_freitas.exception.ResourceNotFoundException;
+import br.com.indra.jusley_freitas.exception.ValidationException;
 import br.com.indra.jusley_freitas.mapper.PriceHistoryMapper;
 import br.com.indra.jusley_freitas.mapper.ProductMapper;
 import br.com.indra.jusley_freitas.model.PriceHistory;
@@ -84,6 +85,21 @@ public class ProductServiceImplement implements ProductService {
             if(product == null) {
                throw new ResourceNotFoundException("We were unable to find a product with this ID: " + productId);
             }
+
+        LoggerConfig.LOGGER_PRODUCT.info("Product: " + product.getName() + " returned successfully!");
+        return ProductMapper.toResponse(product);
+    }
+
+    public ProductResponseDTO findByName(String name){
+        if (name.length() < 2) {
+            throw new ValidationException("The name must be at least 2 characters long.");
+        }
+
+        Product product = productRepository.findByName(name);
+
+        if (product == null) {
+            throw new ResourceNotFoundException("Could not find a product with this name: " + name);
+        }
 
         LoggerConfig.LOGGER_PRODUCT.info("Product: " + product.getName() + " returned successfully!");
         return ProductMapper.toResponse(product);
