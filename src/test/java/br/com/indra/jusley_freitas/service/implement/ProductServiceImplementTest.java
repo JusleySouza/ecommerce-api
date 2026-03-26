@@ -7,6 +7,7 @@ import br.com.indra.jusley_freitas.dto.response.product.ProductResponseDTO;
 import br.com.indra.jusley_freitas.exception.DuplicateSkuException;
 import br.com.indra.jusley_freitas.exception.ResourceNotFoundException;
 import br.com.indra.jusley_freitas.exception.UpdatedNotAllowedException;
+import br.com.indra.jusley_freitas.exception.ValidationException;
 import br.com.indra.jusley_freitas.model.PriceHistory;
 import br.com.indra.jusley_freitas.model.Product;
 import br.com.indra.jusley_freitas.model.SubCategory;
@@ -203,6 +204,34 @@ class ProductServiceImplementTest {
         when(productRepository.findByIdAndActiveTrue(productId)).thenReturn(null);
 
         assertThrows(ResourceNotFoundException.class, () -> service.findProductById(productId));
+    }
+
+    @Test
+    void shouldReturnProductWhenNameExists() {
+        when(productRepository.findByName("Samsung")).thenReturn(product);
+
+        ProductResponseDTO response = service.findByName("Samsung");
+
+        assertNotNull(response);
+        assertEquals("Samsung", response.name());
+
+        verify(productRepository).findByName("Samsung");
+    }
+
+    @Test
+    void shouldThrowValidationExceptionWhenNameIsTooShort() {
+        assertThrows(ValidationException.class, () -> service.findByName("A"));
+
+        verify(productRepository, never()).findByName(any());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenProductNotFound() {
+        when(productRepository.findByName("Samsung")).thenReturn(null);
+
+        assertThrows(ResourceNotFoundException.class, () -> service.findByName("Samsung"));
+
+        verify(productRepository).findByName("Samsung");
     }
 
     @Test
