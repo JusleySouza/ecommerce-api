@@ -2,10 +2,12 @@ package br.com.indra.jusley_freitas.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import lombok.Generated;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@Generated
 public class OpenApiConfig {
 
     @Bean
