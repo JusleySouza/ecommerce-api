@@ -1,7 +1,6 @@
 package br.com.indra.jusley_freitas.dto.error;
 
 import jakarta.validation.ConstraintViolation;
-import lombok.Generated;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +11,6 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
-@Generated
 public class ResponseError {
 
     private final String MESSAGE = "Validation Error";
