@@ -53,6 +53,12 @@ public class ProductController {
         return new ResponseEntity<>(service.findProductById(productId), HttpStatus.OK);
     }
 
+    @GetMapping("/name/{productName}")
+    @Operation(summary = "Search the product by name.", description = "Returns the product data")
+    public ResponseEntity<ProductResponseDTO> findByName (@PathVariable("productName") String productName){
+        return new ResponseEntity<>(service.findByName(productName), HttpStatus.OK);
+    }
+
     @GetMapping
     @Operation(summary = "Search all products.", description = "Returns all saved products.")
     public ResponseEntity<List<ProductResponseDTO>> getAllProducts() {
