@@ -13,6 +13,8 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
 
     Product findBySku(String sku);
 
+    Product findByName(String name);
+
     Product findByIdAndActiveTrue(UUID id);
 
     List<Product> findAllByActiveTrue();
