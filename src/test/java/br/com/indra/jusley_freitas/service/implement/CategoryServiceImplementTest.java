@@ -163,7 +163,7 @@ class CategoryServiceImplementTest {
         product.setSubCategory(subCategory);
 
         when(categoryRepository.findById(categoryId)).thenReturn(Optional.of(category));
-        when(productRepository.findAllByCategoryId(categoryId)).thenReturn(List.of(product));
+        when(productRepository.findBySubCategoryCategoryId(categoryId)).thenReturn(List.of(product));
 
         CategoryWithProductsResponseDTO response = service.findAllProductsByCategory(categoryId);
 
@@ -183,7 +183,7 @@ class CategoryServiceImplementTest {
     @Test
     void shouldThrowWhenNoProductsFound() {
         when(categoryRepository.findById(categoryId)).thenReturn(Optional.of(category));
-        when(productRepository.findAllByCategoryId(categoryId)).thenReturn(List.of());
+        when(productRepository.findBySubCategoryCategoryId(categoryId)).thenReturn(List.of());
 
         assertThrows(ResourceNotFoundException.class, () -> service.findAllProductsByCategory(categoryId));
     }

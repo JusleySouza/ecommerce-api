@@ -27,7 +27,7 @@ public class PriceHistoryServiceImplement implements PriceHistoryService {
         productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("We were unable to find a product with this ID: " + productId));
 
-        List<PriceHistory> priceHistories = historyRepository.findByProductsId(productId);
+        List<PriceHistory> priceHistories = historyRepository.findByProductId(productId);
 
         if (priceHistories.isEmpty()) {
             throw new ResourceNotFoundException("No price history found for this product: " + productId);

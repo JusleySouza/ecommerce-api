@@ -84,7 +84,7 @@ public class CategoryServiceImplement implements CategoryService {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("We were unable to find a category with this ID: " + categoryId));
 
-        List<Product> products = productRepository.findAllByCategoryId(categoryId);
+        List<Product> products = productRepository.findBySubCategoryCategoryId(categoryId);
 
         if (products.isEmpty()) {
             throw new ResourceNotFoundException("No products found for category ID: " + categoryId);

@@ -62,7 +62,7 @@ class PriceHistoryServiceImplementTest {
     void shouldReturnPriceHistorySuccessfully() {
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
 
-        when(historyRepository.findByProductsId(productId)).thenReturn(List.of(history));
+        when(historyRepository.findByProductId(productId)).thenReturn(List.of(history));
 
         List<HistoryProductResponseDTO> response = service.getHistoryByProductId(productId);
 
@@ -71,7 +71,7 @@ class PriceHistoryServiceImplementTest {
         assertEquals("Geladeira", response.get(0).product());
 
         verify(productRepository).findById(productId);
-        verify(historyRepository).findByProductsId(productId);
+        verify(historyRepository).findByProductId(productId);
     }
 
     @Test
@@ -83,21 +83,21 @@ class PriceHistoryServiceImplementTest {
         assertTrue(ex.getMessage().contains(productId.toString()));
 
         verify(productRepository).findById(productId);
-        verify(historyRepository, never()).findByProductsId(any());
+        verify(historyRepository, never()).findByProductId(any());
     }
 
     @Test
     void shouldThrowWhenNoHistoryFound() {
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
 
-        when(historyRepository.findByProductsId(productId)).thenReturn(Collections.emptyList());
+        when(historyRepository.findByProductId(productId)).thenReturn(Collections.emptyList());
 
         ResourceNotFoundException ex = assertThrows(ResourceNotFoundException.class, () -> service.getHistoryByProductId(productId));
 
         assertTrue(ex.getMessage().contains("No price history"));
 
         verify(productRepository).findById(productId);
-        verify(historyRepository).findByProductsId(productId);
+        verify(historyRepository).findByProductId(productId);
     }
 
 }
