@@ -14,7 +14,7 @@ public record UserRequestDTO(
         String name,
         @NotEmpty(message = "{cpf.not.empty}")
         @CPF(message = "{cpf.not.valid}")
-        @Schema(description = "User CPF", type = "String", example = "123.456.789-00")
+        @Schema(description = "User CPF", type = "String", example = "147.976.510-40")
         String cpf,
         @Email(message = "{email.not.valid}")
         @NotEmpty(message = "{email.not.empty}")
