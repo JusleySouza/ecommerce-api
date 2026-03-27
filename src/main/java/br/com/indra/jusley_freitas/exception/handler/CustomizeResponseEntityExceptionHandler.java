@@ -82,4 +82,12 @@ public class CustomizeResponseEntityExceptionHandler extends ResponseEntityExcep
         return new  ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(InsufficientStockException.class)
+    public final ResponseEntity<ExceptionResponse> handleInsufficientStockExceptions(Exception exception, WebRequest request){
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date(), exception.getMessage(), request.getDescription(false));
+        LoggerConfig.LOGGER_EXCEPTION.error(exception.getMessage());
+        return new  ResponseEntity<>(exceptionResponse, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
 }
