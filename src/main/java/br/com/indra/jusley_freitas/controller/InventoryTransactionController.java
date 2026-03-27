@@ -6,6 +6,7 @@ import br.com.indra.jusley_freitas.dto.response.inventory.CompleteInventoryTrans
 import br.com.indra.jusley_freitas.service.InventoryTransactionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +25,13 @@ public class InventoryTransactionController {
 
     @PostMapping("/{productId}/add")
     @Operation(summary = "Add stock", description = "Add stock to a product's inventory.")
-    public ResponseEntity<InventoryTransactionResponseDTO> add(@PathVariable UUID productId, @RequestBody InventoryTransactionRequestDTO request) {
+    public ResponseEntity<InventoryTransactionResponseDTO> add(@PathVariable UUID productId, @Valid @RequestBody InventoryTransactionRequestDTO request) {
         return new ResponseEntity<>(service.addStock(productId, request), HttpStatus.CREATED);
     }
 
     @PostMapping("/{productId}/remove")
     @Operation(summary = "Remove stock", description = "Remove stock to a product's inventory.")
-    public ResponseEntity<InventoryTransactionResponseDTO> remove(@PathVariable UUID productId, @RequestBody InventoryTransactionRequestDTO request) {
+    public ResponseEntity<InventoryTransactionResponseDTO> remove(@PathVariable UUID productId, @Valid @RequestBody InventoryTransactionRequestDTO request) {
         return new ResponseEntity<>(service.removeStock(productId, request), HttpStatus.CREATED);
     }
 
