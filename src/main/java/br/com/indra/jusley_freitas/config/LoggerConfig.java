@@ -12,6 +12,8 @@ public class LoggerConfig {
     public static final Logger LOGGER_INVENTORY_TRANSACTION = LoggerFactory.getLogger(InventoryTransactionService.class);
     public static final Logger LOGGER_CATEGORY = LoggerFactory.getLogger(CategoryService.class);
     public static final Logger LOGGER_SUB_CATEGORY = LoggerFactory.getLogger(SubCategoryService.class);
+    public static final Logger LOGGER_CART = LoggerFactory.getLogger(CartService.class);
+    public static final Logger LOGGER_USER = LoggerFactory.getLogger(UserService.class);
     public static final Logger LOGGER_EXCEPTION = LoggerFactory.getLogger(CustomizeResponseEntityExceptionHandler.class);
 
 }
