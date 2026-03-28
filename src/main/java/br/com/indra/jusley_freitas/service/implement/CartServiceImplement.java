@@ -93,5 +93,10 @@ public class CartServiceImplement implements CartService {
         cartItemRepository.delete(item);
     }
 
+    public void clearCart(UUID userId) {
+        Cart cart = getOrCreateCart(userId);
+        LoggerConfig.LOGGER_CART.info("Cart cleared successfully!");
+        cartItemRepository.deleteByCartId(cart.getId());
+    }
 
 }

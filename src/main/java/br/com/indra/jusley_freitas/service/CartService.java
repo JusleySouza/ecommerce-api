@@ -17,4 +17,6 @@ public interface CartService {
 
     public void removeItem(UUID userId, UUID itemId);
 
+    public void clearCart(UUID cartId);
+
 }
