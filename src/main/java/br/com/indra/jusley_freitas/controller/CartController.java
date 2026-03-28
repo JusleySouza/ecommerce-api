@@ -34,4 +34,11 @@ public class CartController {
         return new ResponseEntity<>(cartService.addItem(userId, request), HttpStatus.CREATED);
     }
 
+    @PutMapping("/items/{productId}")
+    @Operation(summary = "Update item to cart", description = "Update the quantity of an item in the cart for the specified User ID.")
+    public ResponseEntity<Void> updateItem(@PathVariable UUID userId, @PathVariable UUID productId, @Valid @RequestBody UpdateCartItemRequestDTO request) {
+        cartService.updateItem(userId, productId, request.quantity());
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }
