@@ -28,4 +28,10 @@ public class CartController {
         return new ResponseEntity<>(cartService.getCart(userId), HttpStatus.OK);
     }
 
+    @PostMapping("/items")
+    @Operation(summary = "Add item to cart", description = "Add an item to the cart for the specified User ID.")
+    public ResponseEntity<CartResponseDTO> addItem(@PathVariable UUID userId, @Valid @RequestBody CartItemRequestDTO request) {
+        return new ResponseEntity<>(cartService.addItem(userId, request), HttpStatus.CREATED);
+    }
+
 }
