@@ -11,4 +11,6 @@ public interface CartService {
 
     public CartResponseDTO getCart(UUID userId);
 
+    public CartResponseDTO addItem(UUID userId, CartItemRequestDTO request);
+
 }

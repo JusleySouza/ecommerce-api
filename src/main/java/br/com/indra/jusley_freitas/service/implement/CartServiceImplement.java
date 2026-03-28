@@ -38,13 +38,35 @@ public class CartServiceImplement implements CartService {
                 });
     }
 
-    @Override
     public CartResponseDTO getCart(UUID userId) {
         Cart cart = getOrCreateCart(userId);
 
         List<CartItem> items = cartItemRepository.findByCartId(cart.getId());
 
         LoggerConfig.LOGGER_CART.info("Cart successfully executed!");
+        return CartMapper.toResponse(cart, items);
+    }
+
+    public CartResponseDTO addItem(UUID userId, CartItemRequestDTO request) {
+        Cart cart = getOrCreateCart(userId);
+
+        Product product = productRepository.findById(request.productId())
+                .orElseThrow(() -> new ResourceNotFoundException("We were unable to find a product with this ID: " + request.productId()));
+
+        Optional<CartItem> existingItem = cartItemRepository.findByCartIdAndProductId(cart.getId(), request.productId());
+
+        if (existingItem.isPresent()) {
+            CartItem item = existingItem.get();
+            item.setQuantity(item.getQuantity() + request.quantity());
+            cartItemRepository.save(item);
+        } else {
+            CartItem newItem = CartMapper.toItemModel(cart.getId(), product, request);
+            cartItemRepository.save(newItem);
+        }
+
+        List<CartItem> items = cartItemRepository.findByCartId(cart.getId());
+
+        LoggerConfig.LOGGER_CART.info("Item added to cart successfully!");
         return CartMapper.toResponse(cart, items);
     }
 
