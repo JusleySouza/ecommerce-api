@@ -13,4 +13,6 @@ public interface CartService {
 
     public CartResponseDTO addItem(UUID userId, CartItemRequestDTO request);
 
+    public void updateItem(UUID userId, UUID itemId, int quantity);
+
 }

@@ -70,4 +70,17 @@ public class CartServiceImplement implements CartService {
         return CartMapper.toResponse(cart, items);
     }
 
+    public void updateItem(UUID userId, UUID productId, int quantity) {
+        Cart cart = cartRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Cart not found"));
+
+        CartItem item = cartItemRepository.findByCartIdAndProductId(cart.getId(), productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Item not found in cart: " + productId));
+
+        item.setQuantity(quantity);
+
+        LoggerConfig.LOGGER_CART.info("Item updated to cart successfully!");
+        cartItemRepository.save(item);
+    }
+
 }
