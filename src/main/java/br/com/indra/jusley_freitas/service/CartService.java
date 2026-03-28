@@ -15,4 +15,6 @@ public interface CartService {
 
     public void updateItem(UUID userId, UUID itemId, int quantity);
 
+    public void removeItem(UUID userId, UUID itemId);
+
 }

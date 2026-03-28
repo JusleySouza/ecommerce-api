@@ -83,4 +83,15 @@ public class CartServiceImplement implements CartService {
         cartItemRepository.save(item);
     }
 
+    public void removeItem(UUID userId, UUID productId) {
+        Cart cart = getOrCreateCart(userId);
+
+        CartItem item = cartItemRepository.findByCartIdAndProductId(cart.getId(), productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Item not found to cart: "+ productId));
+
+        LoggerConfig.LOGGER_CART.info("Item removed to cart successfully!");
+        cartItemRepository.delete(item);
+    }
+
+
 }
