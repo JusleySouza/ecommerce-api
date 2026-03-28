@@ -1,7 +1,6 @@
 package br.com.indra.jusley_freitas.model;
 
 import br.com.indra.jusley_freitas.enums.CartStatus;
-import br.com.indra.jusley_freitas.enums.InventoryReason;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;

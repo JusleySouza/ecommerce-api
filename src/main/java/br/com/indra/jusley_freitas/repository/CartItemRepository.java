@@ -20,8 +20,4 @@ public interface CartItemRepository extends JpaRepository<CartItem, UUID> {
     @Modifying
     @Transactional
     void deleteByCartId(UUID cartId);
-
-    @Modifying
-    @Transactional
-    void deleteByCartIdAndProductId(UUID cartId, UUID productId);
 }
